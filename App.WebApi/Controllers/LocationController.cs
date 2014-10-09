@@ -28,8 +28,8 @@
             return Ok(location);
         }
 
-        [HttpPost]
-        public IHttpActionResult Post(LocationModel newLocation)
+        [HttpPut]
+        public IHttpActionResult Update(LocationModel newLocation)
         {
             string userId = this.User.Identity.GetUserId();
             var user = this.data.Users.All().FirstOrDefault(u => u.Id == userId);

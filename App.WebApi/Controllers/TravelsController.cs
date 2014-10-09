@@ -78,6 +78,8 @@
 
             var travelInfo = new SimpleTravelModel
             {
+                Description = dbTravel.Description,
+                Name = dbTravel.Title,
                 StartDate = dbTravel.StartDate,
                 Id = dbTravel.Id,
                 Distance = dbTravel.Distance

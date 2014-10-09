@@ -22,7 +22,6 @@ namespace App.WebApi.Models
                     Longtitude = p.Longtitude,
                     Title = p.Title,
                     Description = p.Description
-                    
                 };
             }
         }

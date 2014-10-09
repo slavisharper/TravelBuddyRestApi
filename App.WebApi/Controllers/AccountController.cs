@@ -1,5 +1,6 @@
 ﻿namespace App.WebApi.Controllers
 {
+    using App.Data;
     using App.Models;
     using App.WebApi.Models;
     using App.WebApi.Providers;
@@ -21,18 +22,20 @@
     using System.Web.Http.ModelBinding;
 
     [Authorize]
-    [RoutePrefix("api/users")]
-    public class AccountController : ApiController
+    [RoutePrefix("api/user")]
+    public class AccountController : BaseController
     {
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
 
-        public AccountController()
+        public AccountController(ITravelBuddyData data)
+            : base(data)
         {
         }
 
         public AccountController(ApplicationUserManager userManager,
-            ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
+            ISecureDataFormat<AuthenticationTicket> accessTokenFormat, ITravelBuddyData data)
+            :base(data)
         {
             UserManager = userManager;
             AccessTokenFormat = accessTokenFormat;
@@ -330,8 +333,6 @@
             }
 
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
-            user.Travels = new HashSet<Travel>();
-
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
@@ -339,6 +340,9 @@
                 return GetErrorResult(result);
             }
 
+            user.Travels = new HashSet<Travel>();
+            user.Favourites = new HashSet<Place>();
+            this.data.SaveChanges();
             return Ok();
         }
 

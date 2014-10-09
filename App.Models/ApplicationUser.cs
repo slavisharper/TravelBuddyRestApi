@@ -16,7 +16,9 @@
             return userIdentity;
         }
 
-        public ICollection<Travel> Travels { get; set; }
+        public virtual ICollection<Travel> Travels { get; set; }
+
+        public virtual ICollection<Place> Favourites { get; set; }
 
         public double? Latitude { get; set; }
 

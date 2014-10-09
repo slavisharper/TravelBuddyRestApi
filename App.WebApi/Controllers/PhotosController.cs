@@ -30,13 +30,31 @@
         [HttpGet]
         public IHttpActionResult AllByPlaceId(int placeId)
         {
-            string userId = this.User.Identity.GetUserId();
             var result = this.data.Photos
                 .All()
                 .Where(p => p.PlaceId == placeId)
                 .Select(PhotoModel.FromPhoto);
 
             return Ok(result);
+        }
+
+        [HttpGet]
+        public IHttpActionResult AllByPlaceId(int placeId, bool byUser)
+        {
+            if (byUser)
+            {
+                string userId = this.User.Identity.GetUserId();
+                var result = this.data.Photos
+                    .All()
+                    .Where(p => p.PlaceId == placeId && p.UserId == userId)
+                    .Select(PhotoModel.FromPhoto);
+
+                return Ok(result);
+            }
+            else
+            {
+                return this.AllByPlaceId(placeId);
+            }
         }
 
         [HttpPost]

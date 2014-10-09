@@ -50,6 +50,7 @@ namespace App.WebApi.Models
             {
                 var result = place.Photos
                     .Where(p => p.PlaceId == place.Id)
+                    .Take(10)
                     .Select(p => p.Image)
                     .ToList();
                 return result;

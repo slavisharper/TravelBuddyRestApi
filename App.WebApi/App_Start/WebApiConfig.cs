@@ -19,6 +19,18 @@
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
+                name: "Location",
+                routeTemplate: "api/user/location",
+                defaults: new { controller = "location" }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "Favourites",
+                routeTemplate: "api/user/favourites",
+                defaults: new { controller = "favourites" }
+            );
+
+            config.Routes.MapHttpRoute(
                 name: "PlaceEdit",
                 routeTemplate: "api/travels/{id}/places",
                 defaults: new { controller = "travelplaces" }

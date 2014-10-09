@@ -28,18 +28,19 @@
             return this.AllByPage(0, "asc", "top");
         }
 
-        // api/places/{id}
+        // TO DO paging
         [HttpGet]
-        public IHttpActionResult ById(int id)
+        public IHttpActionResult All()
         {
-            return this.ById(id, true);
+            return this.AllByPage(0, "asc", "top");
         }
 
         // api/places/{id}?isPublic=true
         [HttpGet]
-        public IHttpActionResult ById(int id, bool isPublic)
+        public IHttpActionResult ById(int id)
         {
             string userId = this.User.Identity.GetUserId();
+            bool isPublic = User.Identity.IsAuthenticated;
             var place = this.data.Places.All().FirstOrDefault(p => p.Id == id);
             if (place == null)
             {
@@ -73,6 +74,11 @@
             }
             else if (orderBy == "nearby")
             {
+                if (!this.User.Identity.IsAuthenticated)
+                {
+                    return BadRequest("You must login!");
+                }
+
                 string userId = this.User.Identity.GetUserId();
                 var user = this.data.Users.All().FirstOrDefault(u => u.Id == userId);
                 if (user.Latitude == null || user.Longtitude == null)
@@ -87,6 +93,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         public IHttpActionResult Add(PlaceModel newPlace)
         {
             var dbPlace = new Place
