@@ -229,6 +229,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\FavouritesController.cs" />
+    <Compile Include="Models\ModifiedTravelModel.cs" />
     <Compile Include="Models\CreatePlaceModel.cs" />
     <Compile Include="Models\PlaceDetailModel.cs" />
     <Compile Include="Controllers\LocationController.cs" />
