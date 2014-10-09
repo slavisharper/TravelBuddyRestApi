@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace App.WebApi.Controllers
+namespace App.WebApi.Models
 {
-    public class DetailPlaceModel
+    public class PlaceDetailModel
     {
-        public DetailPlaceModel(bool isPublic, Place place, string userId = null)
+        public PlaceDetailModel(bool isPublic, Place place, string userId = null)
         {
             this.Id = place.Id;
             this.Description = place.Description;

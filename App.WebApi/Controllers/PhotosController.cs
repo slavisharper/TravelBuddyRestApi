@@ -6,7 +6,6 @@
     using Microsoft.AspNet.Identity;
     using System.Linq;
     using System.Web.Http;
-    using Microsoft.AspNet.Identity;
 
     [Authorize]
     public class PhotosController : BaseController

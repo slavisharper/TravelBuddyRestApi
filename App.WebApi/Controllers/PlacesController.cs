@@ -46,7 +46,7 @@
                 return NotFound();
             }
 
-            var placeDetails = new DetailPlaceModel(isPublic, place, userId);
+            var placeDetails = new PlaceDetailModel(isPublic, place, userId);
             return Ok(placeDetails);
         }
 

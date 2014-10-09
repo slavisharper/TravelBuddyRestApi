@@ -330,9 +330,7 @@
             }
 
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
-            user.Rank = 0;
-            user.GamesWon = 0;
-            user.GamesLost = 0;
+            user.Travels = new HashSet<Travel>();
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
