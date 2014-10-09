@@ -30,9 +30,9 @@
 
         // TO DO paging
         [HttpGet]
-        public IHttpActionResult All()
+        public IHttpActionResult All(int page)
         {
-            return this.AllByPage(0, "asc", "top");
+            return this.AllByPage(page, "asc", "top");
         }
 
         // api/places/{id}?isPublic=true
@@ -52,7 +52,7 @@
         }
 
         [HttpGet]
-        // "last", "top", "nearby"
+        // "last", "top", "nearby", "title" 
         public IHttpActionResult All(int page, string orderBy)
         {
             return this.AllByPage(page, "asc", orderBy);
@@ -61,7 +61,7 @@
         [HttpGet]
         public IHttpActionResult AllByPage(int page, string orderType, string orderBy)
         {
-            var result = this.data.Places.All().AsQueryable();
+            IQueryable<PlaceModel> result = null;
             bool isAscending = orderType == "asc";
 
             if (orderBy == "last")
@@ -71,6 +71,10 @@
             else if (orderBy == "top")
             {
                 result = GetPlacesByVisitorsCount(page, isAscending);
+            }
+            else if (orderBy == "title")
+            {
+                result = GetPlacesByTitle(page, isAscending);
             }
             else if (orderBy == "nearby")
             {
@@ -83,13 +87,38 @@
                 var user = this.data.Users.All().FirstOrDefault(u => u.Id == userId);
                 if (user.Latitude == null || user.Longtitude == null)
                 {
-                    return BadRequest("Update user location");
+                    return BadRequest("Update user location!");
                 }
 
                 result = GetNearbyPlaces(page, user);
             }
 
             return Ok(result);
+        }
+
+        private IQueryable<PlaceModel> GetPlacesByTitle(int page, bool isAscending)
+        {
+            if (isAscending)
+            {
+                var result = this.data.Places
+                    .All()
+                    .OrderBy(p => p.Title)
+                    .Skip(page * PageSize)
+                    .Take(PageSize)
+                    .Select(PlaceModel.FromPlace);
+                return result;
+            }
+            else
+            {
+                var result = this.data.Places
+                    .All()
+                    .OrderByDescending(p => p.Title)
+                    .Skip(page * PageSize)
+                    .Take(PageSize)
+                    .Select(PlaceModel.FromPlace);
+
+                return result;
+            }
         }
 
         [HttpPost]
@@ -118,7 +147,7 @@
             return Ok(newPlace);
         }
 
-        private IQueryable<Place> GetNearbyPlaces(int page, ApplicationUser user)
+        private IQueryable<PlaceModel> GetNearbyPlaces(int page, ApplicationUser user)
         {
             var result = this.data.Places
                     .All()
@@ -126,12 +155,12 @@
                     .AsQueryable()
                     .OrderBy(p => p.Visitors.Count)
                     .Skip(page * PageSize)
-                    .Take(PageSize);
-
+                    .Take(PageSize)
+                    .Select(PlaceModel.FromPlace);
             return result;
         }
 
-        private IQueryable<Place> GetPlacesByVisitorsCount(int page, bool isAscending)
+        private IQueryable<PlaceModel> GetPlacesByVisitorsCount(int page, bool isAscending)
         {
             if (isAscending)
             {
@@ -139,7 +168,8 @@
                     .All()
                     .OrderBy(p => p.Visitors.Count)
                     .Skip(page * PageSize)
-                    .Take(PageSize);
+                    .Take(PageSize)
+                    .Select(PlaceModel.FromPlace);
 
                 return result;
             }
@@ -149,13 +179,13 @@
                     .All()
                     .OrderByDescending(p => p.Visitors.Count)
                     .Skip(page * PageSize)
-                    .Take(PageSize);
-
+                    .Take(PageSize)
+                    .Select(PlaceModel.FromPlace);
                 return result;
             }
         }
 
-        private IQueryable<Place> GetPlacesByVisitedDate(int page, bool isAscending)
+        private IQueryable<PlaceModel> GetPlacesByVisitedDate(int page, bool isAscending)
         {
             if (isAscending)
 	        {
@@ -163,8 +193,8 @@
                     .All()
                     .OrderBy(p => p.LastVisited)
                     .Skip(page * PageSize)
-                    .Take(PageSize);
-
+                    .Take(PageSize)
+                    .Select(PlaceModel.FromPlace);
                 return result;
 	        }
             else
@@ -173,7 +203,8 @@
                     .All()
                     .OrderByDescending(p => p.LastVisited)
                     .Skip(page * PageSize)
-                    .Take(PageSize);
+                    .Take(PageSize)
+                    .Select(PlaceModel.FromPlace);
 
                 return result;
             }

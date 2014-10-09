@@ -89,7 +89,7 @@
         }
 
         [HttpPut]
-        public IHttpActionResult Change(int id, SimpleTravelModel changedModel)
+        public IHttpActionResult Change(int id, ModifiedTravelModel changedModel)
         {
             return Ok();
         }
