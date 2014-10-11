@@ -9,7 +9,7 @@ namespace App.WebApi.Models
 {
     public class SimpleTravelModel
     {
-        public static Expression<Func<Travel, SimpleTravelModel>> FromGame
+        public static Expression<Func<Travel, SimpleTravelModel>> FromTravel
         {
             get
             {

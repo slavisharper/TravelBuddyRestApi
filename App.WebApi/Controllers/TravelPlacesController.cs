@@ -19,6 +19,20 @@ namespace App.WebApi.Controllers
         }
 
         // api/travels/{id}/places"
+        [HttpGet]
+        public IHttpActionResult GetPlaces(int id)
+        {
+            var userId = this.User.Identity.GetUserId();
+            var places = this.data.Travels.All().FirstOrDefault(t => t.Id == id).Places;
+            if (places == null)
+            {
+                return NotFound();
+            }
+
+            var result = places.AsQueryable().Select(PlaceModel.FromPlace);
+            return Ok(result);
+        }
+
         [HttpPut]
         public IHttpActionResult AddPlace(int id, [FromUri]int placeId)
         {

@@ -25,7 +25,8 @@
             string id = this.User.Identity.GetUserId();
             var result = this.data.Travels
                 .All()
-                .Where(t => t.User.Id == id);
+                .Where(t => t.User.Id == id)
+                .Select(SimpleTravelModel.FromTravel);
 
             return Ok(result);
         }
@@ -38,7 +39,8 @@
                 .All()
                 .OrderByDescending(t => t.StartDate)
                 .Where(t => t.User.Id == id)
-                .Take(count);
+                .Take(count)
+                .Select(SimpleTravelModel.FromTravel);
 
             return Ok(result);
         }
