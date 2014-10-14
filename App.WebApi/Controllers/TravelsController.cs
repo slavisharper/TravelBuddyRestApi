@@ -72,7 +72,8 @@
                 Distance = 0,
                 StartDate = DateTime.Now,
                 Title = newTravel.Title,
-                UserId = userId
+                UserId = userId,
+                Description = newTravel.Description
             };
 
             this.data.Travels.Add(dbTravel);
