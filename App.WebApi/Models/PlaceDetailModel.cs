@@ -18,6 +18,7 @@ namespace App.WebApi.Models
             this.Longtitude = place.Longtitude;
             this.Title = place.Title;
             this.Photos = GetImages(isPublic, place, userId);
+            this.Visitors = GetNames(place);
         }
 
         public int Id { get; set; }
@@ -36,22 +37,22 @@ namespace App.WebApi.Models
 
         public ICollection<String> Visitors { get; set; }
 
-        public ICollection<Byte[]> Photos { get; set; }
+        public ICollection<int> Photos { get; set; }
 
-        private ICollection<string> GetNames(ICollection<ApplicationUser> users)
+        private ICollection<string> GetNames(Place place)
         {
-            ICollection<string> names = users.Select(u => u.UserName).ToList();
+            ICollection<string> names = place.Visitors.Select(u => u.UserName).ToList();
             return names;
         }
 
-        private ICollection<byte[]> GetImages(bool isPublic, Place place, string userId)
+        private ICollection<int> GetImages(bool isPublic, Place place, string userId)
         {
             if (isPublic)
             {
                 var result = place.Photos
                     .Where(p => p.PlaceId == place.Id)
                     .Take(10)
-                    .Select(p => p.Image)
+                    .Select(p => p.Id)
                     .ToList();
                 return result;
             }
@@ -59,7 +60,7 @@ namespace App.WebApi.Models
             {
                 var result = place.Photos
                     .Where(p => p.PlaceId == place.Id && p.UserId == userId)
-                    .Select(p => p.Image)
+                    .Select(p => p.Id)
                     .ToList();
                 return result;
             }

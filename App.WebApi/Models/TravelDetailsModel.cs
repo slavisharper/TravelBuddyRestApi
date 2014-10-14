@@ -19,9 +19,9 @@ namespace App.WebApi.Models
             this.EndDate = travel.EndDate;
             this.Description = travel.Description;
             this.Photos = travel.Photos.AsQueryable()
-                .Select(PhotoModel.FromPhoto).ToList();
+                .Select(p => p.Id).ToList();
             this.Places = travel.Places.AsQueryable()
-                .Select(PlaceModel.FromPlace).ToList();
+                .Select(p => p.Id).ToList();
         }
 
         public int Id { get; set; }
@@ -40,8 +40,8 @@ namespace App.WebApi.Models
 
         public virtual String User { get; set; }
 
-        public virtual ICollection<PhotoModel> Photos { get; set; }
+        public virtual ICollection<int> Photos { get; set; }
 
-        public virtual ICollection<PlaceModel> Places { get; set; }
+        public virtual ICollection<int> Places { get; set; }
     }
 }
