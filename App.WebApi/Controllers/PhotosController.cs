@@ -70,6 +70,9 @@
             };
 
             this.data.Photos.Add(dbPhoto);
+            var dbPlace = this.data.Places.All().FirstOrDefault(p => p.Id == newPhoto.PlaceID);
+            dbPlace.Photos.Add(dbPhoto);
+
             this.data.SaveChanges();
 
             newPhoto.Id = dbPhoto.Id;

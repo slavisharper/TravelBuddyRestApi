@@ -11,7 +11,7 @@ namespace App.Models
 
         public string Name { get; set; }
 
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
 
         public string UserId { get; set; }
 
