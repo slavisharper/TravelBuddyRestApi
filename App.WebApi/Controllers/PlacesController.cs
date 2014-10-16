@@ -151,7 +151,7 @@
         {
             var result = this.data.Places
                     .All()
-                    .Where(p => GetDistance(p.Latitude, p.Longtitude, user.Latitude, user.Longtitude) <= 100.0)
+                    .Where(p => GetDistance(p.Latitude, p.Longtitude, user.Latitude, user.Longtitude) <= 1000.0)
                     .AsQueryable()
                     .OrderBy(p => p.Visitors.Count)
                     .Skip(page * PageSize)
