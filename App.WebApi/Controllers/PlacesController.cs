@@ -25,7 +25,9 @@
         [HttpGet]
         public IHttpActionResult All()
         {
-            return this.AllByPage(0, "asc", "top");
+            var result = this.data.Places.All().Select(PlaceModel.FromPlace);
+            return Ok(result);
+            // return this.AllByPage(0, "asc", "top");
         }
 
         // TO DO paging
